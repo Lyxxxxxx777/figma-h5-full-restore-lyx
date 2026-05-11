@@ -47,7 +47,15 @@ See [`SKILL.md`](./SKILL.md) for the full specification.
 
 ## Installation
 
-This skill follows the [Agent Skills](https://www.anthropic.com/engineering/agent-skills) convention. Drop it into your agent's skills directory:
+### Recommended: via the [skills.sh](https://skills.sh) CLI
+
+```bash
+npx skills add Lyxxxxxx777/figma-h5-full-restore-lyx
+```
+
+This installs the skill into your agent's skills directory automatically and contributes anonymous telemetry to the [skills.sh leaderboard](https://skills.sh).
+
+### Alternative: manual clone
 
 ```bash
 # macOS / Linux
@@ -59,7 +67,7 @@ cd $env:USERPROFILE\.agents\skills
 git clone https://github.com/Lyxxxxxx777/figma-h5-full-restore-lyx.git
 ```
 
-Then restart your agent client (CodeMaker / Claude Code / etc.) so it picks up the new skill.
+After installing, restart your agent client (CodeMaker / Claude Code / Cursor / etc.) so it picks up the new skill.
 
 ---
 
