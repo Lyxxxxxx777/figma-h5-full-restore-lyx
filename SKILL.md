@@ -1,6 +1,6 @@
 ---
 name: figma-h5-full-restore-lyx
-description: End-to-end pipeline for restoring an H5 activity page 1:1 from a Figma link. Use when the user provides a Figma URL and asks to restore/build/implement a full H5 page (with or without a PRD). Orchestrates Figma asset export, page implementation, and local visual self-check by enforcing `figma-implement-design` and `prd-implementation-precheck` underneath, and depends on Vibma MCP and Chrome DevTools MCP. Do NOT use for single-component restoration (use `figma-implement-design`), pure PRD/bugfix work without Figma restoration (use `prd-implementation-precheck` or `verification`), or reverse Figma authoring (use `figma-use`).
+description: Use when the user provides a Figma URL and asks to restore or build a full H5 activity page (with or without a PRD). Triggers on phrases like "restore this Figma page", "1:1 还原", "按设计稿做 H5", and on visual symptoms like off-by-pixels alignment, missing @2x assets, or hidden tab/button states (visible=false sibling nodes). Do NOT use for single-component restoration (use figma-implement-design), pure PRD or bugfix work without Figma restoration (use prd-implementation-precheck or verification), or authoring nodes back into Figma (use figma-use).
 disable-model-invocation: false
 ---
 
