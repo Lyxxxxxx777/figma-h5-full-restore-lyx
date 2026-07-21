@@ -318,11 +318,13 @@ Vibma.frames.update({ items: [
 - ❌ 严禁切了带文字 PNG 后再叠 `<span>` 文字（必然重影）
 - ❌ 严禁导出"GROUP 节点（只含图标+文字）"当完整按钮使用（没底板）
 - ❌ 严禁用 `flex/center` 强行居中需要绝对定位的图层
+- ❌ 严禁对切图做额外缩放（禁止在 CSS 里设置与图片原始尺寸不符的 `width` / `height`、`transform: scale()` 等）
 - ✅ 必须挑出"底板"子节点单独导出
 - ✅ 必须读 `absoluteBoundingBox` 算相对坐标
 - ✅ 必须读 TEXT 节点 `characters` 字段获取真实文案
 - ✅ 多状态资源必须一次切齐（临时改 visible，导出后还原）
 - ✅ 同一占位 IMAGE 节点（导出后文件大小完全一致）只保留一张
+- ✅ **切图渲染必须使用原始尺寸**：用 `<InfraBaseImgBox :image="images.xxx" />` 渲染时，组件会自动按 `image.width / image.height`（即 Figma 设计稿 px 值）拼 `rem`，与 `1rem = 1px` 设计稿坐标系对齐；**除非有明确缩放需求（如整张页面背景图铺满），否则始终使用图片原始尺寸，不要额外设置 `width` / `height` CSS 覆盖组件默认值**
 
 **完成判据**：所有切图都已落盘，manifest.json 已更新。
 
@@ -367,6 +369,7 @@ Vibma.frames.update({ items: [
    - 切图自带文字 → 直接 `<img>`，**严禁再叠 `<span>` 任何文字层**
    - 需要 i18n / 动态文案 → 切**纯净底板**（不含文字版），用 DOM 渲染文字
 9. 缺切图时回到第 1 步用 Vibma 补切，**绝不用 CSS 模拟应付**
+10. **切图始终以原始尺寸渲染**：使用 `<InfraBaseImgBox :image="images.xxx" />` 时组件自动按 `image.width / image.height`（设计稿 px 值）输出 `rem`，**不要在外层额外加 `width` / `height` CSS 覆盖，也不要用 `transform: scale()` 或 `zoom` 缩放切图**；若确实需要整图铺满容器（如背景图），则明确用 `position: absolute; inset: 0; width: 100%; height: 100%` 并在注释里写明理由
 
 **子步骤 2.3：编译校验**
 
@@ -483,6 +486,7 @@ run_terminal_cmd("npm run dev")
 | 自编 mock 文案 | 任务标题、奖品名、按钮字与设计稿不一致 | 没读 TEXT 节点 `characters`，凭印象写 | 任何文案都用 `Vibma.frames.get({ fields: ["characters"] })` 读真实值 |
 | 用 CSS 渐变模拟按钮/卡板 | 视觉粗糙、与设计稿色差大 | 缺切图时图省事用 CSS 应付 | ❌ 严禁，必须回第 1 步补切 |
 | Vue `require()` 不生效 | 报错 "require is not defined" | Vite 不支持 require | 改用 `import xxx from '@figma/...'` 静态导入 |
+| 切图被额外缩放 | 弹窗/按钮/卡片在某些宽度下显示偏大或偏小 | 在 CSS 中用 `width` / `height` / `scale` 覆盖了组件默认的原始尺寸渲染 | 删掉覆盖样式；`InfraBaseImgBox` 已按 `image.width / image.height` 原始尺寸渲染，**不要做任何额外缩放**；确需铺满背景时用 `inset:0; width:100%; height:100%` 并注释说明 |
 
 ### 截图自测相关
 
